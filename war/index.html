@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Quiztionary API</title>
+    <link type="text/css" rel="stylesheet" href="index.css">
+  </head>
+
+  <body>
+    <h1>Quiztionary API</h1>
+    <div class="app-desc">API to keep the informetion for the Quztionary game</div>
+    <div class="app-desc">Version: 1.0.0</div>
+
+	   <h2>Models</h2>
+	  
+	  <div class="model">
+		  <h3 class="field-label"><a name="">WorTranslation</a></h3>
+		  <div class="field-items">
+			  <div class="param">wordSP </div><div class="param-desc"><span class="param-type">String</span> The word in Spanish</div>
+			  <div class="param">typeSP </div><div class="param-desc"><span class="param-type">String</span> Kind of Spanish word</div>
+			  <div class="param">wordEN </div><div class="param-desc"><span class="param-type">String</span> Represents the English word</div>
+			  <div class="param">typeEN </div><div class="param-desc"><span class="param-type">String</span> Type of word in English</div>
+			  <div class="param">category </div><div class="param-desc"><span class="param-type">String</span> Category(s) of the word. If there ir more than one, separate it with "-"</div>
+		  </div>  <!-- field-items -->
+	  </div>
+	  
+	  <div class="model">
+		  <h3 class="field-label"><a name="">Favourite</a></h3>
+		  <div class="field-items">
+			  <div class="param">word </div><div class="param-desc"><span class="param-type">String</span> Represents your favourite word</div>
+		  </div>  <!-- field-items -->
+	  </div>
+	  
+	  <div class="model">
+		  <h3 class="field-label"><a name="">WordStat</a></h3>
+		  <div class="field-items">
+			  <div class="param">word </div><div class="param-desc"><span class="param-type">String</span> Represents the word which belongs to the stats</div>
+			  <div class="param">hits </div><div class="param-desc"><span class="param-type">String</span> Number of hits</div>
+			  <div class="param">fails </div><div class="param-desc"><span class="param-type">String</span> Number of fails</div>
+		  </div>  <!-- field-items -->
+	  </div>
+	  
+	  <div class="model">
+		  <h3 class="field-label"><a name="">User</a></h3>
+		  <div class="field-items">
+			  <div class="param">name </div><div class="param-desc"><span class="param-type">String</span> Represents the user name</div>
+			  <div class="param">password </div><div class="param-desc"><span class="param-type">String</span> Password related with your user</div>
+		  </div>  <!-- field-items -->
+	  </div>
+	  
+	  
+	  <h2>You ought to know...</h2>
+	  <div class="app-desc">
+	  	This API have a token authentication system. To use our API, you first need a authorization token. For all the request, you need to specify 
+	  	in the headers request your current token in this way: "Authentication": "Your token"
+	  	
+	  	You can sign up by requesting as a POST HTTP message, including in the body the fields "name" and "password". Automatically, you will obtain
+	  	your authentication token. This is the URI to which you have to send this request: <i>http://www.quiztionary-api.appspot.com/api/users/new-user</i>
+	  	
+	  	When you log in, you will get a new token, and all the ancient tokens will be invalidated.
+	  </div>
+	  
+  <h2>Methods</h2>
+  	We are working on it! The whole documentation will be avaible soon :)
+  </body>
+</html>
