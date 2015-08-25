@@ -42,6 +42,12 @@ public class Repository implements RepositoryI{
 		}
 	}
 	
+	public void removeWT(WordTranslation wt){
+		List<WordTranslation> lwt = wordTranslations.get(wt.getUser());
+		lwt.remove(wt);
+		wordTranslations.put(wt.getUser(), lwt);
+	}
+	
 	/** TODO LO RELACIONADO CON LAS PALABRAS FAVORITAS*/
 	
 	@Override
@@ -63,6 +69,12 @@ public class Repository implements RepositoryI{
 		}
 	}
 	
+	public void removeFav(Favourites fav){
+		List<Favourites> lwt = favourites.get(fav.getUser());
+		lwt.remove(fav);
+		favourites.put(fav.getUser(), lwt);
+	}
+	
 	/** TODO LO RELACIONADO CON LAS ESTADÍSTICAS */
 	
 	@Override
@@ -82,6 +94,12 @@ public class Repository implements RepositoryI{
 			antigua.add(ws);
 			wordStats.put(user, antigua);
 		}		
+	}
+	
+	public void updateWS(WordStats ws){
+		List<WordStats> lws = wordStats.get(ws.getUser());
+		lws.add(ws);
+		wordStats.put(ws.getUser(), lws);		
 	}
 
 	

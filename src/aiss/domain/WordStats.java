@@ -7,12 +7,11 @@ public class WordStats {
 	private int hits;
 	private String user;
 	
-	public WordStats(String word, int fails, int hits, String user) {
+	public WordStats(String word, int fails, int hits) {
 		super();
 		this.word = word;
 		this.fails = fails;
 		this.hits = hits;
-		this.user = user;
 	}
 	
 	public WordStats(){

@@ -5,8 +5,10 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -244,7 +246,16 @@ public class WordTranslationResource {
 		repository.saveWT(new WordTranslation("hacer ejercicio","loc v","work out","phr v","phrasal verbs"), "admin");
 		
 		User admin = new User("admin", "perrogordo");
+		
 		repository.saveUser(admin);
+		
+		Favourites fav = new Favourites("break down");
+		fav.setUser("admin");
+		repository.saveFav("admin", fav);
+		
+		WordStats ws = new WordStats("break down", 1, 10);
+		ws.setUser("admin");
+		repository.saveWS("admin", ws);
 		
 	}
 	
@@ -270,7 +281,8 @@ public class WordTranslationResource {
 		}
 		
 		List<WordTranslation> res = new ArrayList<>(repository.getAllWT(username));
-		res.addAll(repository.getAllWT("admin"));
+		if(!username.equals("admin"))
+			res.addAll(repository.getAllWT("admin"));
 		
 		return res;
 	}
@@ -304,6 +316,39 @@ public class WordTranslationResource {
 			repository.saveWT(wt, username);
 		
 		return Response.status(javax.ws.rs.core.Response.Status.CREATED).build();
+	}
+	
+	@DELETE
+	@Path("/words/{wordSP}/{typeSP}/{wordEN}/{typeEN}/{category}")
+	@Produces("application/json")
+	public Response removeWT(@Context HttpHeaders headers, 
+			@PathParam("wordSP") String wordSP,
+			@PathParam("typeSP") String typeSP,
+			@PathParam("wordEN") String wordEN,
+			@PathParam("typeEN") String typeEN,
+			@PathParam("category") String category){
+		String userToken="";
+		try{
+			userToken = headers.getRequestHeader("Authentication").get(0);
+		}catch(NullPointerException e){
+			e.printStackTrace();
+		}
+		
+		if(userToken==null || userToken == ""){
+			return Response.status(400).entity("Bad authentication token").build();
+		}
+		String username = repository.getUser(userToken);
+		if(username=="NULL"){
+			return Response.status(400).entity("Bad login").build();
+		}
+		
+		WordTranslation toDelete = new WordTranslation(wordSP, typeSP, wordEN, typeEN, category);
+		toDelete.setUser(username);
+		
+		repository.removeWT(toDelete);
+		
+		return Response.status(204).entity("Deleted").build();
+		
 	}
 	
 	/** TODO LO RELACIONADO CON LAS PALABRAS FAVORITAS */
@@ -360,6 +405,33 @@ public class WordTranslationResource {
 		return Response.status(javax.ws.rs.core.Response.Status.CREATED).build();
 	}
 	
+	@DELETE
+	@Path("/words/favs/{word}")
+	@Produces("application/json")
+	public Response removeFav(@Context HttpHeaders headers, 
+			@PathParam("word") String word){
+		String userToken="";
+		try{
+			userToken = headers.getRequestHeader("Authentication").get(0);
+		}catch(NullPointerException e){
+			e.printStackTrace();
+		}
+		
+		if(userToken==null || userToken == ""){
+			return Response.status(400).entity("Bad authentication token").build();
+		}
+		String username = repository.getUser(userToken);
+		if(username=="NULL"){
+			return Response.status(400).entity("Bad login").build();
+		}
+		
+		Favourites toDelete = new Favourites(word);
+		toDelete.setUser(username);
+		
+		repository.removeFav(toDelete);
+		
+		return Response.status(204).entity("Deleted").build();
+	}
 	
 	/** TODO LO RELACIONADO CON LAS ESTADÍSTICAS*/
 	@GET
@@ -414,7 +486,34 @@ public class WordTranslationResource {
 		return Response.status(javax.ws.rs.core.Response.Status.CREATED).build();
 	}
 	
+	@PUT
+	@Path("/words/stats/{word}")
+	@Consumes("application/json")
+	@Produces("application/json")
+	public Response updateWS(@Context HttpHeaders headers,
+			@PathParam("word") String word,
+			WordStats ws){
+		String userToken="";
+		try{
+			userToken = headers.getRequestHeader("Authentication").get(0);
+		}catch(NullPointerException e){
+			e.printStackTrace();
+		}
+		
+		if(userToken==null || userToken == ""){
+			return Response.status(400).entity("Bad authentication token").build();
+		}
+		String username = repository.getUser(userToken);
+		if(username=="NULL"){
+			return Response.status(400).entity("Bad login").build();
+		}
+		
+		WordStats aux = new WordStats(ws.getWord(), ws.getFails(), ws.getHits());
+		aux.setUser(username);
+		repository.updateWS(aux);
 	
+		return Response.status(204).entity("Updated").build();
+	}
 	
 	/** TODO LO RELACIONADO CON LA AUTENTICACIÓN*/
 	
