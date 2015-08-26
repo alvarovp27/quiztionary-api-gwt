@@ -90,15 +90,19 @@ public class Repository implements RepositoryI{
 		List<WordStats> antigua = new ArrayList<>();
 		if(wordStats.containsKey(user))
 			antigua = wordStats.get(user);
-		if(!antigua.contains(ws)){
-			antigua.add(ws);
-			wordStats.put(user, antigua);
-		}		
+		antigua.add(ws);
+		wordStats.put(user, antigua);
+			
 	}
 	
 	public void updateWS(WordStats ws){
-		List<WordStats> lws = wordStats.get(ws.getUser());
-		lws.add(ws);
+		List<WordStats> lws = new ArrayList<>();
+		if(!wordStats.containsKey(ws.getUser())){
+			lws.add(ws);
+		}else{
+			lws = wordStats.get(ws.getUser());
+			lws.add(ws);
+		}
 		wordStats.put(ws.getUser(), lws);		
 	}
 
